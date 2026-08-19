@@ -1,0 +1,6 @@
+platform,category,metric,concurrency,state,value,unit
+cognodb,coverage,run,,NOT_RUN,,
+neo4j,coverage,run,,NOT_RUN,,
+memgraph,coverage,run,,NOT_RUN,,
+falkordb,coverage,run,,NOT_RUN,,
+arangodb,coverage,run,,NOT_RUN,,

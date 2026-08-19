@@ -1,0 +1,5 @@
+# Public source archive downloaded from https://snap.stanford.edu/data/wiki-Vote.txt.gz
+7d3e53626e14b8b09fb3b396bece9d481ad606bd64ceab066349ff57d4ada7fc  raw/Wiki-Vote.txt.gz
+1aa920408202a19e9d701c3a86aa604d4ecf138b61678cc4fefe5eca877ee3dd  prepared/nodes.csv
+47e7356a358add00130b1e349fe7afd9da031b5d1434ebcf7dfcf85e6e6ad7f6  prepared/relationships.csv
+2d47e4464ba487b7ff75d708e1a31e648fa71f4fce7e95368c216208d141eaae  samples/start-nodes.csv

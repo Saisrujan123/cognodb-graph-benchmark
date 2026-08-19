@@ -1,0 +1,82 @@
+name: graph-benchmark-local
+
+# These containers are parity candidates, not proof of parity with CognoDB Cloud.
+# Docker enforces CPU/RAM; this file does not enforce a one-gigabyte volume quota.
+services:
+  neo4j:
+    image: neo4j:2026.06.0
+    cpus: "0.50"
+    mem_limit: 256m
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: "neo4j/${NEO4J_LOCAL_PASSWORD:?Set NEO4J_LOCAL_PASSWORD}"
+      NEO4J_server_memory_heap_initial__size: 64m
+      NEO4J_server_memory_heap_max__size: 96m
+      NEO4J_server_memory_pagecache_size: 64m
+    volumes:
+      - neo4j-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+  memgraph:
+    image: memgraph/memgraph:3.12.0
+    cpus: "0.50"
+    mem_limit: 256m
+    command: ["--bolt-port=7687", "--memory-limit=200"]
+    ports:
+      - "7688:7687"
+    volumes:
+      - memgraph-data:/var/lib/memgraph
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/7687'"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+  falkordb:
+    image: falkordb/falkordb-server:v4.20.1
+    cpus: "0.50"
+    mem_limit: 256m
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_ARGS: "--maxmemory 200mb --maxmemory-policy noeviction"
+    volumes:
+      - falkordb-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+  arangodb:
+    image: arangodb:3.12.9
+    cpus: "0.50"
+    mem_limit: 256m
+    ports:
+      - "8529:8529"
+    environment:
+      ARANGO_ROOT_PASSWORD: "${ARANGO_LOCAL_PASSWORD:?Set ARANGO_LOCAL_PASSWORD}"
+    command:
+      - "--rocksdb.block-cache-size=33554432"
+      - "--rocksdb.total-write-buffer-size=33554432"
+      - "--server.javascript-enabled=false"
+    volumes:
+      - arangodb-data:/var/lib/arangodb3
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8529/_api/version || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+volumes:
+  neo4j-data:
+  memgraph-data:
+  falkordb-data:
+  arangodb-data:
+

@@ -1,0 +1,24 @@
+# Credentials and local overrides
+.env
+.env.*
+!.env.example
+*.credentials
+*.credentials.txt
+*credential*.txt
+*credentials*.txt
+
+# Downloaded and normalized data (recreated by prepare-data)
+data/raw/*
+data/prepared/*
+
+# Result JSON/CSV/Markdown is intentionally visible for review before future publication.
+
+# Build and editor output
+target/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Local tool downloads
+.tools/
