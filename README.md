@@ -295,39 +295,6 @@ Regenerate tables without changing a database:
 └── pom.xml                      # Pinned Java dependencies and build
 ```
 
-## Why the ZIP's shorter code was not used
-
-Shorter is useful only when behavior stays correct. The ZIP implementation removed essential benchmark safeguards: it had no tests or Maven wrapper, returned hardcoded counts/footprints in places, swallowed mixed-workload failures, did not validate read answers, and did not emit enough data for the assignment matrix.
-
-This repository is already the compressed version: one CLI, one result model, one runner, one small adapter interface, three protocol adapters, and focused helper classes. Removing the reference oracle, result states, timeout/failure accounting, or deterministic workload plan would make the code shorter but the benchmark less trustworthy.
-
-## Before publishing to GitHub
-
-1. Replace the supplied snapshot with fresh per-platform JSON only after the current harness completes a controlled campaign.
-2. Capture live resource limits, versions, service/client regions, network placement, and storage enforcement.
-3. Confirm all five rows are from the same dataset hashes, settings, client, and campaign window.
-4. Keep missing metrics as `NOT_RUN`/`NOT_OBSERVABLE`; never fill gaps with estimates.
-5. Run the exact credential scan and inspect every file:
-
-```bash
-./mvnw clean verify
-./benchmark.sh report
-./scripts/verify-no-secrets.sh /absolute/path/to/credentials.txt
-git status --short
-git diff --check
-```
-
-6. Then create and push the repository yourself:
-
-```bash
-git init
-git add .
-git commit -m "Add reproducible graph database benchmark"
-git branch -M main
-git remote add origin '<your-github-repository-url>'
-git push -u origin main
-```
-
 No GitHub repository, account, email, or external submission is created by this project.
 
 ## License
